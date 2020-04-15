@@ -3,7 +3,7 @@ const twit = require("twit");
 const T = new twit(config);
 
 let params = {
-  q: "#JS OR #javascript OR #vuejs OR #Vue OR #reactjs OR #React",
+  q: "#javascript OR #vuejs OR #Vue OR #reactjs",
   count: 10,
   recent_type: "recent",
 };
