@@ -10,7 +10,7 @@ let params = {
 function retweet() {
   searchTweets(params);
 }
-setInterval(retweet, 15000);
+setInterval(retweet, 120000);
 
 function searchTweets(params) {
   T.get("search/tweets", params, (err, data, response) => {
