@@ -3,8 +3,9 @@ const twit = require("twit");
 const T = new twit(config);
 
 let params = {
-  q: "#coding",
-  count: 1,
+  q: "#JS OR #javascript OR #vuejs OR #Vue OR #reactjs OR #React",
+  count: 10,
+  recent_type: "recent",
 };
 
 function retweet() {
