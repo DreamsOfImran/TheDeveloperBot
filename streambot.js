@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const config = require("./config");
-const twit = require("twit");
-const T = new twit(config);
+const Twit = require("twit");
+const T = new Twit(config);
 
 let stream = T.stream("statuses/filter", {
   track: [
@@ -14,21 +14,25 @@ let stream = T.stream("statuses/filter", {
   ],
 });
 
-stream.on("tweet", (tweet) => {
+stream.on("tweet", async (tweet) => {
   if (!isReply(tweet)) {
-    T.post("favorites/create", { id: tweet.id_str }, (err, data, response) => {
-      if (response) {
-        console.log(
-          chalk.bgRed("Liked") +
-            ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
-        );
+    await T.post(
+      "favorites/create",
+      { id: tweet.id_str },
+      (err, data, response) => {
+        if (response) {
+          console.log(
+            chalk.bgRed("Liked") +
+              ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
+          );
+        }
+        if (err) {
+          console.log(chalk.redBright(err.message));
+        }
       }
-      if (err) {
-        console.log(chalk.redBright(err.message));
-      }
-    });
+    );
 
-    T.post(
+    await T.post(
       "statuses/retweet/:id",
       { id: tweet.id_str },
       (err, data, response) => {
