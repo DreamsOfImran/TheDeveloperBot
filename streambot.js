@@ -14,41 +14,34 @@ let stream = T.stream("statuses/filter", {
   ],
 });
 
-stream.on("tweet", async (tweet) => {
+stream.on("tweet", (tweet) => {
   if (!isReply(tweet)) {
-    await T.post(
-      "favorites/create",
-      { id: tweet.id_str },
-      (err, data, response) => {
-        if (response) {
-          console.log(
-            chalk.bgRed("Liked") +
-              ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
-          );
-        }
-        if (err) {
-          console.log(chalk.redBright(err.message));
-        }
-      }
+    T.post("favorites/create", { id: tweet.id_str }, (err, data, response) =>
+      responseCallback(err, response, "Liked", tweet)
     );
 
-    await T.post(
+    T.post(
       "statuses/retweet/:id",
       { id: tweet.id_str },
-      (err, data, response) => {
-        if (response) {
-          console.log(
-            chalk.bgGreen("Retweeted") +
-              ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
-          );
-        }
-        if (err) {
-          console.log(chalk.redBright(err.message));
-        }
-      }
+      (err, data, response) =>
+        responseCallback(err, response, "Retweeted", tweet)
     );
   }
 });
+
+function responseCallback(err, response, actionType, tweet) {
+  if (response) {
+    console.log(
+      (actionType === "Retweeted"
+        ? chalk.bgGreen(actionType)
+        : chalk.bgRed(actionType)) +
+        ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
+    );
+  }
+  if (err) {
+    console.log(chalk.redBright(err.message));
+  }
+}
 
 function isReply(tweet) {
   if (
