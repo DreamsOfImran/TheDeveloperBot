@@ -16,7 +16,7 @@ let stream = T.stream("statuses/filter", {
 
 stream.on("tweet", (tweet) => {
   if (!isReply(tweet)) {
-    T.post("favorites/create", { id: tweet.id_str }, (err, response) => {
+    T.post("favorites/create", { id: tweet.id_str }, (err, data, response) => {
       if (response) {
         console.log(
           chalk.bgRed("Liked") +
@@ -28,21 +28,21 @@ stream.on("tweet", (tweet) => {
       }
     });
 
-    T.post(
-      "statuses/retweet/:id",
-      { id: tweet.id_str },
-      (err, data, response) => {
-        if (response) {
-          console.log(
-            chalk.bgGreen("Retweeted") +
-              ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
-          );
-        }
-        if (err) {
-          console.log(chalk.redBright(err.message));
-        }
-      }
-    );
+    // T.post(
+    //   "statuses/retweet/:id",
+    //   { id: tweet.id_str },
+    //   (err, data, response) => {
+    //     if (response) {
+    //       console.log(
+    //         chalk.bgGreen("Retweeted") +
+    //           ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
+    //       );
+    //     }
+    //     if (err) {
+    //       console.log(chalk.redBright(err.message));
+    //     }
+    //   }
+    // );
   }
 });
 
