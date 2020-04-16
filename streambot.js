@@ -22,27 +22,26 @@ stream.on("tweet", (tweet) => {
           chalk.bgRed("Liked") +
             ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
         );
+        T.post(
+          "statuses/retweet/:id",
+          { id: tweet.id_str },
+          (err, data, response) => {
+            if (response) {
+              console.log(
+                chalk.bgGreen("Retweeted") +
+                  ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
+              );
+            }
+            if (err) {
+              console.log(chalk.redBright(err.message));
+            }
+          }
+        );
       }
       if (err) {
         console.log(chalk.redBright(err.message));
       }
     });
-
-    T.post(
-      "statuses/retweet/:id",
-      { id: tweet.id_str },
-      (err, data, response) => {
-        if (response) {
-          console.log(
-            chalk.bgGreen("Retweeted") +
-              ` ${tweet.user.name}'s (${tweet.user.screen_name}) Tweet`
-          );
-        }
-        if (err) {
-          console.log(chalk.redBright(err.message));
-        }
-      }
-    );
   }
 });
 
