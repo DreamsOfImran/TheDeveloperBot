@@ -6,11 +6,11 @@ const T = new Twit(config);
 let stream = T.stream("statuses/filter", {
   track: [
     "#DreamsOfImran",
-    "#javascript",
     "#vuejs",
     "#Vue",
     "#reactjs",
     "#Nodejs",
+    "#100DaysOfCode",
   ],
 });
 
