@@ -11,11 +11,12 @@ let stream = T.stream("statuses/filter", {
     "#reactjs",
     "#Nodejs",
     "#100DaysOfCode",
+    "#javascript",
   ],
 });
 
 stream.on("tweet", (tweet) => {
-  if (!isReply(tweet)) {
+  if (!isReply(tweet) && !isSpam(tweet.entities.hashtags)) {
     T.post("favorites/create", { id: tweet.id_str }, (err, data, response) =>
       responseCallback(err, response, "Liked", tweet)
     );
@@ -53,4 +54,22 @@ function isReply(tweet) {
     tweet.in_reply_to_screen_name
   )
     return true;
+}
+
+function isSpam(hashtags) {
+  const spam_hashtags = [
+    "shit",
+    "drug",
+    "drugs",
+    "weed",
+    "homework",
+    "essaypay",
+    "homeworkslave",
+    "cocaine",
+    "drogue",
+  ];
+  const spam = hashtags.filter((ht) =>
+    spam_hashtags.includes(ht.text.toLowerCase())
+  );
+  return spam.length > 0;
 }
