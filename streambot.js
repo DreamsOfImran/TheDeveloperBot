@@ -63,6 +63,8 @@ function isSpam(hashtags) {
     "drugs",
     "weed",
     "homework",
+    "essay",
+    "essays",
     "essaypay",
     "homeworkslave",
     "cocaine",
