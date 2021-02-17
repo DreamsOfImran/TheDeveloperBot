@@ -16,17 +16,22 @@ let stream = T.stream("statuses/filter", {
 });
 
 stream.on("tweet", (tweet) => {
-  if (!isReply(tweet) && !isSpam(tweet.entities.hashtags)) {
-    T.post("favorites/create", { id: tweet.id_str }, (err, data, response) =>
-      responseCallback(err, response, "Liked", tweet)
-    );
+  if (!isReply(tweet)) {
+    const tweet_text = !!tweet?.extended_tweet?.full_text
+      ? tweet.extended_tweet.full_text
+      : tweet.text;
+    if (!isSpam(tweet_text)) {
+      T.post("favorites/create", { id: tweet.id_str }, (err, data, response) =>
+        responseCallback(err, response, "Liked", tweet)
+      );
 
-    T.post(
-      "statuses/retweet/:id",
-      { id: tweet.id_str },
-      (err, data, response) =>
-        responseCallback(err, response, "Retweeted", tweet)
-    );
+      T.post(
+        "statuses/retweet/:id",
+        { id: tweet.id_str },
+        (err, data, response) =>
+          responseCallback(err, response, "Retweeted", tweet)
+      );
+    }
   }
 });
 
@@ -56,7 +61,8 @@ function isReply(tweet) {
     return true;
 }
 
-function isSpam(hashtags) {
+function isSpam(twitter_text) {
+  const hashtags = twitter_text.split("#");
   const spam_hashtags = [
     "shit",
     "drug",
@@ -71,7 +77,7 @@ function isSpam(hashtags) {
     "drogue",
   ];
   const spam = hashtags.filter((ht) =>
-    spam_hashtags.includes(ht.text.toLowerCase())
+    spam_hashtags.includes(ht.trim().toLowerCase())
   );
   return spam.length > 0;
 }
