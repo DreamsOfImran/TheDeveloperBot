@@ -11,7 +11,6 @@ let stream = T.stream("statuses/filter", {
     "#reactjs",
     "#Nodejs",
     "#100DaysOfCode",
-    "#javascript",
   ],
 });
 
