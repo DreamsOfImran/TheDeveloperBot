@@ -82,7 +82,7 @@ function isSpam(twitter_text) {
     "cocaine",
     "drogue",
   ];
-  const spam = hashtags.filter((ht) =>
+  const spam = hashtags.map((ht) =>
     spam_hashtags.includes(ht.trim().toLowerCase())
   );
   return spam.length > 0;
