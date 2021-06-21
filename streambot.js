@@ -61,7 +61,6 @@ function isReply(tweet) {
 }
 
 function isSpam(twitter_text) {
-  const hashtags = twitter_text.split("#");
   const spam_hashtags = [
     "shit",
     "drug",
@@ -81,9 +80,8 @@ function isSpam(twitter_text) {
     "homeworkslave",
     "cocaine",
     "drogue",
+    "penis",
+    "sex"
   ];
-  const spam = hashtags.filter((ht) =>
-    spam_hashtags.includes(ht.trim().toLowerCase())
-  );
-  return spam.length > 0;
+  return spam_hashtags.some(sh => twitter_text.toLowerCase().includes(sh))
 }
