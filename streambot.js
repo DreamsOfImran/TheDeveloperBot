@@ -81,7 +81,8 @@ function isSpam(twitter_text) {
     "cocaine",
     "drogue",
     "penis",
-    "sex"
+    "sex",
+    "cheerupraja00710"
   ];
   return spam_hashtags.some(sh => twitter_text.toLowerCase().includes(sh))
 }
